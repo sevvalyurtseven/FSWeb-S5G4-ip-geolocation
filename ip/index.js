@@ -1,26 +1,26 @@
 //axios import buraya gelecek
 
-var benimIP;
+import axios from "axios";
 
+var benimIP;
 
 // ------------ değiştirmeyin --------------
 // licensed to Ergineer 2022
 require("babel-core/register");
 require("babel-polyfill");
-async function ipAdresimiAl(){
-	await axios({
-		method: 'get',
-		url: 'https://apis.ergineer.com/ipadresim',
-	})
-	.then(function (response) {
-		return response.data
-	})
-	.then(function (a) {
-		benimIP=a
-	});
-}				
+async function ipAdresimiAl() {
+  await axios({
+    method: "get",
+    url: "https://apis.ergineer.com/ipadresim",
+  })
+    .then(function (response) {
+      return response.data;
+    })
+    .then(function (a) {
+      benimIP = a;
+    });
+}
 // ------------ değiştirmeyin --------------
-
 
 /*
 	ADIM 1: axios kullanarak, aşağıdaki URL'ye GET sorgusu atacağız
@@ -67,6 +67,81 @@ async function ipAdresimiAl(){
 	Örnek dinamik URL kullanımı: var url = "https://apis.ergineer.com/ipgeoapi/"+benimIP; 
 */
 
-
-
 //kodlar buraya gelecek
+
+ipAdresimiAl().then(() => {
+  const apiUrl = "https://apis.ergineer.com/ipgeoapi/" + benimIP;
+
+  axios
+    .get(apiUrl)
+    .then((response) => {
+      cardMaker(response.data);
+	  console.log(response.data);
+    })
+    .catch((error) => {
+      console.error("Hata oluştu: " + error);
+    });
+});
+
+//ADIM 3
+
+function cardMaker(obje) {
+	console.log(obje);
+  const div = document.createElement("div"); //div nesnesi
+  div.className = "card"; //class name atadik
+
+
+  //ADIM 4
+
+  const BigBox = document.querySelector(".cards"); //büyük box'in icine kucuk boxi koyduk
+  BigBox.append(div);
+
+  //ADIM 3 DEVAM
+
+  const img = document.createElement("img"); //img nesnesi
+  img.setAttribute(
+    "src",
+    "https://cdn.pixabay.com/photo/2012/04/10/23/02/turkey-26820_1280.png"
+  );
+  div.append(img);
+
+  const cardInfo = document.createElement("div"); //div nesnesi
+  cardInfo.className = "card-info";
+  div.append(cardInfo);
+
+  const h3 = document.createElement("h3");
+  h3.className = "ip";
+  h3.textContent = obje.sorgu;
+  cardInfo.append(h3);
+
+  const countryP = document.createElement("p");
+  countryP.className = "ulke";
+  countryP.textContent = `${obje.ülke} (${obje.ülkeKodu})`;
+  cardInfo.append(countryP);
+
+  const latP = document.createElement("p");
+  latP.textContent = `Enlem: ${obje.enlem} Boylam: ${obje.boylam}`;
+  cardInfo.append(latP);
+
+  const sehirP = document.createElement("p");
+  sehirP.textContent = `Şehir: ${obje.şehir}`;
+  cardInfo.append(sehirP);
+
+  const saatP = document.createElement("p");
+  saatP.textContent = `Saat dilimi: ${obje.saatdilimi}`;
+  cardInfo.append(saatP);
+
+  const paraP = document.createElement("p");
+  paraP.textContent = `Para birimi: ${obje.parabirimi}`;
+  cardInfo.append(paraP);
+
+  const isp = document.createElement("p");
+  isp.textContent = `ISP: ${obje.isp}`;
+  cardInfo.append(isp);
+
+
+
+
+
+  return div;
+}
