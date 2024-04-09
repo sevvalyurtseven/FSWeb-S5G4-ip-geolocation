@@ -2,8 +2,6 @@
 
 import axios from "axios";
 
-var benimIP;
-
 // ------------ değiştirmeyin --------------
 // licensed to Ergineer 2022
 require("babel-core/register");
@@ -31,6 +29,20 @@ async function ipAdresimiAl() {
 	ADIM 5'e gelene kadar fonksiyonunuzu test etmek için ip nizi URL'ye manuel olarak ekleyebilirsiniz.
 */
 
+const benimIP = "88.244.128.218";
+const URL = "https://apis.ergineer.com/ipgeoapi/" + benimIP;
+
+axios
+  .get(URL)
+  .then((response) => {
+    //console.log(response.data);
+    const component = IP(response.data);
+    document.querySelector(".cards").appendChild(component);
+  })
+  .catch((error) => {
+    console.err(error);
+  });
+
 /*
 	ADIM 2: Geri döndürülen verileri inceleyin, bu sizin ip bilgileriniz! Bileşen fonksiyonunuzu geliştirmek içindeki bu veri yapısını
 	iyice anlamanız gerekmektedir.
@@ -54,6 +66,61 @@ async function ipAdresimiAl() {
     </div>
 */
 
+const IP = (data) => {
+  //class'i card olan div'i olusturduk
+
+  const card = document.createElement("div");
+  card.classList.add("card");
+
+  //img tag'i olusturduk ve source degeri set ettik
+
+  const img = document.createElement("img");
+  img.setAttribute("src", data.ülkebayrağı);
+
+  //class'i card-info olan div'i olusturduk
+
+  const cardInfo = document.createElement("div");
+  cardInfo.classList.add("card-info");
+
+  //class'i ip olan h3'i olusturduk ve ip degerini set ettik
+
+  const ip = document.createElement("h3");
+  ip.classList.add("ip");
+  ip.textContent = data.sorgu;
+
+  //class'i ulke olan p'i olusturduk ve ulke degerini ve ulke kodunu set ettik
+
+  const ulke = document.createElement("p");
+  ulke.classList.add("ulke");
+  ulke.textContent = `${data.ülke} (${data.ülkeKodu})`;
+
+  //p tag'lerini olusturduk ve enlem, boylam, sehir, saatdilimi, parabirimi, isp bilgilerini set ettik
+
+  const enlem = document.createElement("p");
+  enlem.textContent = `Enlem: ${data.enlem} Boylam: ${data.boylam}`;
+
+  const sehir = document.createElement("p");
+  sehir.textContent = `Şehir: ${data.şehir}`;
+
+  const saatDilimi = document.createElement("p");
+  saatDilimi.textContent = `Saat dilimi: ${data.saatdilimi}`;
+
+  const paraBirimi = document.createElement("p");
+  paraBirimi.textContent = `Para birimi: ${data.parabirimi}`;
+
+  const isp = document.createElement("p");
+  isp.textContent = `ISP: ${data.isp}`;
+
+  //card divinin icine img, cardInfo divini ekledik
+
+  card.append(img, cardInfo);
+
+  //cardInfo divinin icine h3 ve p tag'lerini ekledik
+  cardInfo.append(ip, ulke, enlem, sehir, saatDilimi, paraBirimi, isp);
+
+  return card;
+};
+
 /*
 	ADIM 4: API'den alınan verileri kullanarak ADIM 3'te verilen yapıda bir kart oluşturun ve 
 	bu kartı DOM olarak .cards elementinin içine ekleyin. 
@@ -69,79 +136,4 @@ async function ipAdresimiAl() {
 
 //kodlar buraya gelecek
 
-ipAdresimiAl().then(() => {
-  const apiUrl = "https://apis.ergineer.com/ipgeoapi/" + benimIP;
-
-  axios
-    .get(apiUrl)
-    .then((response) => {
-      cardMaker(response.data);
-	  console.log(response.data);
-    })
-    .catch((error) => {
-      console.error("Hata oluştu: " + error);
-    });
-});
-
-//ADIM 3
-
-function cardMaker(obje) {
-	console.log(obje);
-  const div = document.createElement("div"); //div nesnesi
-  div.className = "card"; //class name atadik
-
-
-  //ADIM 4
-
-  const BigBox = document.querySelector(".cards"); //büyük box'in icine kucuk boxi koyduk
-  BigBox.append(div);
-
-  //ADIM 3 DEVAM
-
-  const img = document.createElement("img"); //img nesnesi
-  img.setAttribute(
-    "src",
-    "https://cdn.pixabay.com/photo/2012/04/10/23/02/turkey-26820_1280.png"
-  );
-  div.append(img);
-
-  const cardInfo = document.createElement("div"); //div nesnesi
-  cardInfo.className = "card-info";
-  div.append(cardInfo);
-
-  const h3 = document.createElement("h3");
-  h3.className = "ip";
-  h3.textContent = obje.sorgu;
-  cardInfo.append(h3);
-
-  const countryP = document.createElement("p");
-  countryP.className = "ulke";
-  countryP.textContent = `${obje.ülke} (${obje.ülkeKodu})`;
-  cardInfo.append(countryP);
-
-  const latP = document.createElement("p");
-  latP.textContent = `Enlem: ${obje.enlem} Boylam: ${obje.boylam}`;
-  cardInfo.append(latP);
-
-  const sehirP = document.createElement("p");
-  sehirP.textContent = `Şehir: ${obje.şehir}`;
-  cardInfo.append(sehirP);
-
-  const saatP = document.createElement("p");
-  saatP.textContent = `Saat dilimi: ${obje.saatdilimi}`;
-  cardInfo.append(saatP);
-
-  const paraP = document.createElement("p");
-  paraP.textContent = `Para birimi: ${obje.parabirimi}`;
-  cardInfo.append(paraP);
-
-  const isp = document.createElement("p");
-  isp.textContent = `ISP: ${obje.isp}`;
-  cardInfo.append(isp);
-
-
-
-
-
-  return div;
-}
+export async function getData() {}
