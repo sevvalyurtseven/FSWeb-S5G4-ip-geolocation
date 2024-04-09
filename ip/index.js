@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-var benimIP = "";
+var benimIP;
 // ------------ değiştirmeyin --------------
 // licensed to Ergineer 2022
 require("babel-core/register");
@@ -36,7 +36,7 @@ ipAdresimiAl().then(() => {
     .get(URL)
     .then((response) => {
       //console.log(response.data);
-      const component = IP(response.data);
+      const component = cardCreator(response.data);
       document.querySelector(".cards").appendChild(component);
     })
     .catch((error) => {
@@ -67,7 +67,7 @@ ipAdresimiAl().then(() => {
     </div>
 */
 
-const IP = (data) => {
+const cardCreator = (data) => {
   //class'i card olan div'i olusturduk
 
   const card = document.createElement("div");
@@ -136,5 +136,3 @@ const IP = (data) => {
 */
 
 //kodlar buraya gelecek
-
-export async function getData() {}
