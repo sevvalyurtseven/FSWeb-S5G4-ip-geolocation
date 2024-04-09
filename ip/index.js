@@ -76,7 +76,7 @@ const cardCreator = (data) => {
   //img tag'i olusturduk ve source degeri set ettik
 
   const img = document.createElement("img");
-  img.setAttribute("src", data.ülkebayrağı);
+  img.src = `https://flaglog.com/codes/standardized-rectangle-120px/${data["ülkeKodu"]}.png`;
 
   //class'i card-info olan div'i olusturduk
 
