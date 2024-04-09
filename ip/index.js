@@ -2,6 +2,7 @@
 
 import axios from "axios";
 
+var benimIP = "";
 // ------------ değiştirmeyin --------------
 // licensed to Ergineer 2022
 require("babel-core/register");
@@ -28,20 +29,20 @@ async function ipAdresimiAl() {
 	NOT: Bilgisayarın IP adresini öğrenmek için: https://apis.ergineer.com/ipadresim 
 	ADIM 5'e gelene kadar fonksiyonunuzu test etmek için ip nizi URL'ye manuel olarak ekleyebilirsiniz.
 */
+ipAdresimiAl().then(() => {
+  const URL = "https://apis.ergineer.com/ipgeoapi/" + benimIP;
 
-const benimIP = "88.244.128.218";
-const URL = "https://apis.ergineer.com/ipgeoapi/" + benimIP;
-
-axios
-  .get(URL)
-  .then((response) => {
-    //console.log(response.data);
-    const component = IP(response.data);
-    document.querySelector(".cards").appendChild(component);
-  })
-  .catch((error) => {
-    console.err(error);
-  });
+  axios
+    .get(URL)
+    .then((response) => {
+      //console.log(response.data);
+      const component = IP(response.data);
+      document.querySelector(".cards").appendChild(component);
+    })
+    .catch((error) => {
+      console.err(error);
+    });
+});
 
 /*
 	ADIM 2: Geri döndürülen verileri inceleyin, bu sizin ip bilgileriniz! Bileşen fonksiyonunuzu geliştirmek içindeki bu veri yapısını
